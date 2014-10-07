@@ -9,21 +9,20 @@ class MoviesController < ApplicationController
   def index
 		sort = params[:sort]
 		order = params[:order]
-
+	
+		if(order.nil? || order == 'DESC') 
+			@order = 'ASC'
+		else
+			@order = 'DESC'
+		end
 		
 
 		case 'title'
 		when 'title'
-			if(order.nil? || order == 'desc') 
-				@order = 'asc'
-				@movies = Movie.order("title ASC")
-			else
-				@order = 'desc'
-				@movies = Movie.order("title DESC")
-			end
+			@movies = Movie.order("title #{@order}")
 			
 		when 'release_date'
-			@movies = Movie.order("release_date ASC")
+			@movies = Movie.order("release_date #{@order}")
 		else
 			@movies = Movie.all
 		end
